@@ -7,17 +7,12 @@
             <div class="media">
                 <div class="media-body">
                     
-                    <h4>{{ $thread->title }}</h4>
+                    <h4> <a href="#">{{$thread->creator->name}}</a> posted: {{ $thread->title }}</h4>
                     {{ $thread->body }}
                 
                     <ul class="list-unstyled">
                         @foreach($thread->replies as $reply)
-                            <li class="media mt-3">
-                                <div class="media-body">
-                                    <h5><a href="#">{{ $reply->owner->name }}</a> said {{ $reply->created_at->diffForHumans() }}</h5>
-                                    {{ $reply->body }}
-                                </div>
-                            </li>
+                           @include('threads.reply')
                         @endforeach
                     </ul>
                 </div>
