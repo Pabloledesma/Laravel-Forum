@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ParticipteInForumTest extends TestCase
+class CreateThreadsTest extends TestCase
 {
     use DatabaseMigrations;
     
@@ -21,7 +21,7 @@ class ParticipteInForumTest extends TestCase
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
         // Given we have a authenticated user
-        $this->be($user = factory('App\User')->create());
+        $this->signIn();
 
         // and an existing thread
         $thread = factory('App\Thread')->create();
