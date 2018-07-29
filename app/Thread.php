@@ -10,12 +10,7 @@ class Thread extends Model
     
     public function path()
     {
-        return '/threads/' . $this->id;
-    }
-
-    public function replies()
-    {
-        return $this->hasMany(Reply::class);
+        return "/threads/{$this->channel->slug}/{$this->id}";
     }
 
     public function creator()
@@ -23,8 +18,23 @@ class Thread extends Model
         return $this->belongsTo(User::class, 'user_id'); 
     }
 
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+    }
+
     public function addReply($reply)
     {
         $this->replies()->create($reply);
+    }
+
+    /** 
+     * A Thread may have many replies
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
     }
 }

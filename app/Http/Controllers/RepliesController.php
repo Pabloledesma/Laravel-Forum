@@ -13,7 +13,14 @@ class RepliesController extends Controller
         $this->middleware('auth');
     }
     
-    public function store(Thread $thread)
+    /**
+     * Persist a new reply
+     * 
+     * @param Tread $thread
+     * @param integer $channelId
+     * @return \Illuminate\Http\Redirect
+     */
+    public function store($channelId, Thread $thread)
     {
         $thread->addReply([
             'body' => request('body'),

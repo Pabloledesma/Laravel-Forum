@@ -10,28 +10,42 @@ class CreateThreadsTest extends TestCase
     use DatabaseMigrations;
     
     /** @test */
-    public function unauthanticated_users_may_not_add_replies()
+    public function guest_cannot_see_the_create_thread_page()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
-        
-        $this->post('threads/1/replies', []);
+        $this->withExceptionHandling();
+
+        $this->get('/threads/create')
+            ->assertRedirect('/login');
+
+        $this->post('/threads')
+            ->assertRedirect('/login');
     }
     
     /** @test */
-    public function an_authenticated_user_may_participate_in_forum_threads()
+    public function unauthanticated_users_may_not_add_replies()
+    {
+        $this->withExceptionHandling()
+            ->post('threads/some-channel/1/replies', [])
+            ->assertRedirect('/login');
+    }
+    
+    
+    /** @test */
+    public function an_authenticated_user_can_create_new_forum_threads()
     {
         // Given we have a authenticated user
         $this->signIn();
 
         // and an existing thread
-        $thread = factory('App\Thread')->create();
+        $thread = create('App\Thread');
+        $reply = make('App\Reply');
 
         // when the user adds a reply to the thread
-        $reply = factory('App\Reply')->make();
         $this->post($thread->path() . '/replies', $reply->toArray());
 
         // then the reply should be visible on the page
         $this->get($thread->path())
-            ->assertSee($reply->body);
+            ->assertSee($thread->title)
+            ->assertSee($thread->body);
     }
 }
