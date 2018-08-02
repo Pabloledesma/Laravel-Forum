@@ -23,7 +23,7 @@ class ThreadsController extends Controller
         $threads = Thread::latest()->get();
         return view('threads.index', compact('threads'));
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      *
@@ -42,6 +42,12 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required',
+            'channel_id' => 'required|exists:channels,id'
+        ]);
+        
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
