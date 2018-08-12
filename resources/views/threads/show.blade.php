@@ -7,7 +7,7 @@
             <div class="media">
                 <div class="media-body">
                     
-                    <h4> <a href="#">{{$thread->creator->name}}</a> posted: {{ $thread->title }}</h4>
+                    <h4> <a href="/profiles/{{ $thread->creator->name }}">{{$thread->creator->name}}</a> posted: {{ $thread->title }}</h4>
                     {{ $thread->body }}
                 
                     <ul class="list-unstyled">
