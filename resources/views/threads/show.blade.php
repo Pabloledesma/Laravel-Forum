@@ -7,7 +7,25 @@
             <div class="media">
                 <div class="media-body">
                     
-                    <h4> <a href="/profiles/{{ $thread->creator->name }}">{{$thread->creator->name}}</a> posted: {{ $thread->title }}</h4>
+                    <div class="level">
+                        <h4 class="flex"> 
+                            <a href="/profiles/{{ $thread->creator->name }}">
+                                {{$thread->creator->name}}
+                            </a> 
+                            posted: {{ $thread->title }}
+                        </h4>
+
+                        @if(Auth::check())
+                        <form action="{{ $thread->path() }}" method="POST">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+
+                            <button type="submit" class="btn btn-link">Delete Thread</button>
+                        </form>
+                        @endif
+                    
+                    </div>
+
                     {{ $thread->body }}
                 
                     <ul class="list-unstyled">
