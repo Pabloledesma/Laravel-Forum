@@ -1,7 +1,23 @@
 <li class="media mt-3">
     <div class="media-body">
-        <h5><a href="#">{{ $reply->owner->name }}</a> 
-        said {{ $reply->created_at->diffForHumans() }}</h5>
+        <div class="level">
+            <h5 class="flex">
+                <a href="#">{{ $reply->owner->name }}</a> 
+                said {{ $reply->created_at->diffForHumans() }}...
+            </h5>
+        
+            <div>
+                
+                <form method="POST" action="/replies/{{ $reply->id }}/favorites">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-default" {{ $reply->isFavorited() ? 'disabled' : '' }}>
+                        {{ $reply->favorites()->count() }} {{ str_plural('Favorite', $reply->favorites()->count()) }}
+                    </button>
+                </form>
+            </div>
+        
+        </div>
+
         {{ $reply->body }}
     </div>
 </li>
